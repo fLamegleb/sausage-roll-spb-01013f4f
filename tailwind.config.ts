@@ -39,6 +39,16 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        caramel: {
+          DEFAULT: "hsl(var(--caramel))",
+          foreground: "hsl(var(--caramel-foreground))",
+        },
+        bread: "hsl(var(--bread))",
+        mustard: "hsl(var(--mustard))",
+        cocoa: "hsl(var(--cocoa))",
+        cream: "hsl(var(--cream))",
+        tomato: "hsl(var(--tomato))",
+        mint: "hsl(var(--mint))",
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -63,7 +73,19 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        display: ["Playfair Display", "Georgia", "serif"],
+        sans: ["Manrope", "system-ui", "sans-serif"],
+      },
       keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0) rotate(-2deg)" },
+          "50%": { transform: "translateY(-12px) rotate(2deg)" },
+        },
+        rise: {
+          from: { opacity: "0", transform: "translateY(18px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -82,6 +104,8 @@ export default {
         },
       },
       animation: {
+        float: "float 7s ease-in-out infinite",
+        rise: "rise 0.7s ease-out both",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
