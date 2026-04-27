@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,35 +10,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 38 70% 95%;
+    --foreground: 24 45% 13%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 40 69% 98%;
+    --card-foreground: 24 45% 13%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 40 69% 98%;
+    --popover-foreground: 24 45% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 8 72% 42%;
+    --primary-foreground: 42 78% 96%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 37 55% 82%;
+    --secondary-foreground: 24 45% 13%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 35 52% 88%;
+    --muted-foreground: 25 26% 38%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 42 86% 55%;
+    --accent-foreground: 24 45% 13%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 31 42% 78%;
+    --input: 34 45% 84%;
+    --ring: 8 72% 42%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    --caramel: 29 68% 45%;
+    --caramel-foreground: 42 78% 96%;
+    --bread: 38 79% 72%;
+    --mustard: 42 86% 55%;
+    --cocoa: 24 45% 20%;
+    --cream: 40 75% 96%;
+    --tomato: 8 72% 42%;
+    --mint: 141 21% 42%;
+    --gradient-hero: linear-gradient(135deg, hsl(38 78% 94%) 0%, hsl(35 68% 84%) 48%, hsl(22 58% 72%) 100%);
+    --gradient-button: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--caramel)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--bread)));
+    --shadow-warm: 0 24px 80px -36px hsl(24 45% 20% / 0.55);
+    --shadow-card: 0 18px 45px -28px hsl(24 45% 20% / 0.5);
 
     --sidebar-background: 0 0% 98%;
 
@@ -99,7 +115,47 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: "Manrope", system-ui, sans-serif;
+    background-image: radial-gradient(circle at 12% 8%, hsl(var(--bread) / 0.28), transparent 28%), radial-gradient(circle at 92% 18%, hsl(var(--accent) / 0.18), transparent 30%);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    letter-spacing: 0;
+  }
+}
+
+@layer utilities {
+  .bg-gradient-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  .bg-gradient-button {
+    background-image: var(--gradient-button);
+  }
+
+  .bg-gradient-gold {
+    background-image: var(--gradient-gold);
+  }
+
+  .shadow-warm {
+    box-shadow: var(--shadow-warm);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .paper-grain {
+    background-image: radial-gradient(hsl(var(--cocoa) / 0.08) 1px, transparent 1px);
+    background-size: 18px 18px;
   }
 }
