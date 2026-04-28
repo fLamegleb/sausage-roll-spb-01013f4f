@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/sausage-roll-hero.jpg";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -72,6 +73,12 @@ const Index = () => {
   const [district, setDistrict] = useState("all");
   const [dough, setDough] = useState("all");
   const [active, setActive] = useState(bakeries[0]);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const openBakeryDetails = (bakery: Bakery) => {
+    setActive(bakery);
+    setDetailsOpen(true);
+  };
 
   const filteredBakeries = useMemo(() => {
     return [...bakeries]
@@ -166,7 +173,7 @@ const Index = () => {
                       <div key={label} className="rounded-lg bg-muted p-3"><div className="flex justify-between font-bold"><span>{label}</span><span>{value}</span></div><div className="mt-2 h-2 rounded-full bg-border"><div className="h-full rounded-full bg-primary" style={{ width: `${Number(value) * 20}%` }} /></div></div>
                     ))}
                   </div>
-                  <Button variant="bakery" className="w-full" onClick={() => setActive(bakery)}>Подробнее</Button>
+                  <Button variant="bakery" className="w-full" onClick={() => openBakeryDetails(bakery)}>Подробнее</Button>
                 </div>
               </article>
             ))}
@@ -201,7 +208,7 @@ const Index = () => {
             <div className="absolute left-[18%] top-[20%] h-px w-[68%] rotate-12 bg-primary-foreground/20" /><div className="absolute left-[22%] top-[62%] h-px w-[60%] -rotate-12 bg-primary-foreground/20" /><div className="absolute left-[38%] top-[12%] h-[72%] w-px bg-primary-foreground/20" />
             {bakeries.map((bakery) => <button key={bakery.name} onClick={() => setActive(bakery)} className="absolute flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-card transition hover:scale-125" style={{ left: bakery.x, top: bakery.y }} aria-label={`Открыть точку ${bakery.name}`}><MapPin className="h-4 w-4" /></button>)}
             <div className="absolute bottom-8 left-8 right-8 rounded-2xl bg-card p-5 text-foreground shadow-warm md:left-auto md:w-80">
-              <div className="mb-2 text-xl font-black">{active.name}</div><p className="text-sm text-muted-foreground">Рейтинг сосиски: <b className="text-primary">{active.rating}</b> · цена {active.price} ₽</p><Button variant="hero" size="sm" className="mt-4">Подробнее</Button>
+              <div className="mb-2 text-xl font-black">{active.name}</div><p className="text-sm text-muted-foreground">Рейтинг сосиски: <b className="text-primary">{active.rating}</b> · цена {active.price} ₽</p><Button variant="hero" size="sm" className="mt-4" onClick={() => openBakeryDetails(active)}>Подробнее</Button>
             </div>
           </div>
         </div>
@@ -234,6 +241,37 @@ const Index = () => {
       </section>
 
       <a href="#review" className="fixed bottom-4 right-4 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-button text-primary-foreground shadow-warm md:hidden" aria-label="Оставить отзыв"><Send className="h-5 w-5" /></a>
+
+      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+        <DialogContent className="max-h-[92vh] overflow-y-auto rounded-2xl border-border p-0 shadow-warm sm:max-w-3xl">
+          <div className="grid gap-0 md:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative min-h-72 overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
+              <img src={active.image} alt={`Подробное фото булочной ${active.name}`} className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute left-4 top-4 rounded-full bg-card/90 px-3 py-1 text-sm font-black text-primary shadow-card">★ {active.rating}</div>
+            </div>
+            <div className="p-6 md:p-8">
+              <DialogHeader>
+                <DialogDescription className="font-bold uppercase text-primary">Подробная карточка пекарни</DialogDescription>
+                <DialogTitle className="text-3xl font-black leading-tight md:text-4xl">{active.name}</DialogTitle>
+              </DialogHeader>
+              <p className="mt-4 leading-7 text-muted-foreground">{active.comment}</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <Info icon={MapPin} label="Район" value={`${active.district}, СПб`} />
+                <Info icon={PiggyBank} label="Цена" value={`${active.price} ₽`} />
+                <Info icon={Wheat} label="Тип теста" value={active.dough} />
+                <Info icon={Star} label="Индекс" value={`${active.rating} из 5`} />
+              </div>
+              <div className="mt-6 space-y-3">
+                {[['Сочность сосиски', active.juiciness], ['Свежесть теста', active.freshness], ['Цена/качество', active.value], ['Внешний вид', active.look]].map(([label, value]) => <Score key={label} label={String(label)} value={Number(value)} />)}
+              </div>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Button variant="hero" onClick={() => setDetailsOpen(false)}><Navigation /> Построить маршрут</Button>
+                <Button asChild variant="bakery" onClick={() => setDetailsOpen(false)}><a href="#review"><Send /> Оставить отзыв</a></Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 };
