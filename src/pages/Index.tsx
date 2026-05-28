@@ -356,15 +356,19 @@ const Index = () => {
             <h2 className="text-4xl font-black uppercase md:text-6xl">Формула честной булки</h2>
           </Reveal>
           <div className="grid gap-4 md:grid-cols-5">
-            {[["тесто", Wheat], ["сосиска", Heart], ["цена", PiggyBank], ["фото", Camera], ["лайк", ThumbsUp]].map(([label, Icon], i) => (
-              <Reveal key={String(label)} delay={i * 60}>
-                <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card transition hover:-translate-y-1 hover:shadow-warm">
-                  {/* @ts-expect-error icon component */}
-                  <Icon className="mx-auto mb-4 h-9 w-9 text-primary" />
-                  <div className="text-sm font-black uppercase">{String(label)}</div>
-                  <div className="mt-2 text-2xl font-black text-accent">+1</div>
-                </div>
-              </Reveal>
+            {[["тесто", Wheat], ["сосиска", Heart], ["цена", PiggyBank], ["фото", Camera], ["лайк", ThumbsUp]].map(([label, Icon], i) => {
+              const I = Icon as typeof Wheat;
+              return (
+                <Reveal key={String(label)} delay={i * 60}>
+                  <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card transition hover:-translate-y-1 hover:shadow-warm">
+                    <I className="mx-auto mb-4 h-9 w-9 text-primary" />
+                    <div className="text-sm font-black uppercase">{String(label)}</div>
+                    <div className="mt-2 text-2xl font-black text-accent">+1</div>
+                  </div>
+                </Reveal>
+              );
+            })}
+
             ))}
           </div>
           <Reveal>
