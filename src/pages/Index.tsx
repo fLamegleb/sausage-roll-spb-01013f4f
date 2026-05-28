@@ -20,9 +20,8 @@ import {
   Wheat,
 } from "lucide-react";
 import heroImage from "@/assets/sausage-roll-hero.jpg";
+import heroImage from "@/assets/sausage-roll-hero.jpg";
 import mascot from "@/assets/review-mascot.png";
-import diagram from "@/assets/sausage-diagram.png";
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
