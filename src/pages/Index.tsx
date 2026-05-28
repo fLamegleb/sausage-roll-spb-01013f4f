@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/sausage-roll-hero.jpg";
 import mascot from "@/assets/review-mascot.png";
+import sausageOutline from "@/assets/sausage-outline.png";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
