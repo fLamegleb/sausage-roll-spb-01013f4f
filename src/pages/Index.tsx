@@ -369,7 +369,7 @@ const Index = () => {
               );
             })}
 
-            ))}
+
           </div>
           <Reveal>
             <div className="mt-6 rounded-2xl border border-primary/20 bg-card p-6 text-center text-base font-black shadow-card md:text-xl">
