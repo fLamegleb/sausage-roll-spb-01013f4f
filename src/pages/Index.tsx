@@ -247,31 +247,10 @@ const Index = () => {
           <Reveal>
             <p className="mb-3 text-sm font-bold uppercase tracking-wider text-bread">Карта Петербурга</p>
             <h2 className="text-4xl font-black uppercase leading-tight md:text-6xl">Точки, где<br />пахнет булкой</h2>
-            <p className="mt-5 max-w-md text-base leading-7 text-primary-foreground/75">Кликните по отметке, чтобы увидеть мини-карточку с рейтингом сосиски в тесте, ценой и быстрым переходом к деталям.</p>
+            <p className="mt-5 max-w-md text-base leading-7 text-primary-foreground/75">Кликните по жёлтой метке — мини-карточка с рейтингом сосиски в тесте, ценой и быстрым переходом к деталям.</p>
           </Reveal>
           <Reveal delay={120}>
-            <div className="relative min-h-[460px] overflow-hidden rounded-3xl border border-primary-foreground/15 bg-gradient-to-br from-secondary/30 to-bread/20 p-5 shadow-warm">
-              <div className="absolute inset-5 rounded-2xl border border-primary-foreground/10 paper-grain" />
-              <div className="absolute left-[18%] top-[20%] h-px w-[68%] rotate-12 bg-primary-foreground/20" />
-              <div className="absolute left-[22%] top-[62%] h-px w-[60%] -rotate-12 bg-primary-foreground/20" />
-              <div className="absolute left-[38%] top-[12%] h-[72%] w-px bg-primary-foreground/20" />
-              {bakeries.map((b) => (
-                <button
-                  key={b.name}
-                  onClick={() => { setActive(b); }}
-                  className="absolute flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mustard text-cocoa shadow-card transition hover:scale-125 hover:rotate-6"
-                  style={{ left: b.x, top: b.y }}
-                  aria-label={b.name}
-                >
-                  <MapPin className="h-4 w-4" />
-                </button>
-              ))}
-              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-card p-5 text-foreground shadow-warm md:left-auto md:w-80">
-                <div className="mb-1 text-lg font-black uppercase">{active.name}</div>
-                <p className="text-sm text-muted-foreground">Рейтинг сосиски: <b className="text-primary">{active.rating}</b> · цена {active.price} ₽</p>
-                <Button variant="hero" size="sm" className="mt-3" onClick={() => openBakery(active)}>Подробнее</Button>
-              </div>
-            </div>
+            <SpbMap bakeries={bakeries} active={active} setActive={setActive} openBakery={openBakery} />
           </Reveal>
         </div>
       </section>
