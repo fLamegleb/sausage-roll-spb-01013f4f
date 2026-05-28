@@ -343,47 +343,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* PERSONAS + ANALOGS */}
-      <section className="container py-20">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <Reveal>
-            <p className="mb-3 text-sm font-bold uppercase tracking-wider text-primary">Целевая аудитория</p>
-            <h2 className="mb-6 text-4xl font-black uppercase md:text-5xl">Для кого этот сервис</h2>
-            <div className="space-y-4">
-              {personas.map(([name, role, text]) => (
-                <article key={name} className="rounded-2xl border border-border bg-card p-6 shadow-card">
-                  <h3 className="text-xl font-black">{name}</h3>
-                  <p className="text-sm font-bold text-primary">{role}</p>
-                  <p className="mt-2 text-sm text-muted-foreground">{text}</p>
-                </article>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            <div className="rounded-3xl border border-border bg-card p-6 shadow-warm md:p-8">
-              <p className="mb-3 text-sm font-bold uppercase tracking-wider text-primary">Аналоги</p>
-              <h2 className="text-3xl font-black uppercase md:text-4xl">Нишево, без визуального шума</h2>
-              <div className="mt-6 space-y-4">
-                <div className="rounded-xl bg-muted p-5"><b>Hleb club</b><p className="mt-1 text-sm text-muted-foreground">Понятная структура, но местами страдает читаемость.</p></div>
-                <div className="rounded-xl bg-muted p-5"><b>Где Шаверма</b><p className="mt-1 text-sm text-muted-foreground">Удачный нишевый рейтинг с геймификацией, но визуально шумный.</p></div>
-                <div className="rounded-xl bg-primary p-5 text-primary-foreground"><b>Наш фокус</b><p className="mt-1 text-sm text-primary-foreground/85">Один продукт, чистая иерархия и быстрый выбор булочной.</p></div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       <footer className="bg-cocoa py-16 text-primary-foreground/80">
         <div className="container text-center">
           <h2 className="font-display text-5xl font-black uppercase leading-none text-primary-foreground md:text-8xl">Рейтинг<br />булочных<br />СПб</h2>
-          <p className="mt-6 text-sm">Учебный проект · производственная практика 2026</p>
+          <p className="mt-6 text-sm">Sausage Roll Index · Санкт-Петербург</p>
         </div>
       </footer>
 
-      {/* FLOATING CTA mobile */}
-      <a href="#review" className="fixed bottom-4 right-4 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-button text-primary-foreground shadow-warm transition hover:scale-110 md:hidden" aria-label="Оставить отзыв">
-        <Plus className="h-5 w-5" />
-      </a>
 
       {/* DIALOG */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
