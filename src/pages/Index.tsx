@@ -458,10 +458,10 @@ const CompCorner = ({ node, hovered, onHover, align }: { node: CompNode; hovered
           <Icon className="h-5 w-5" />
         </div>
       </div>
-      <div className={`mb-1 border-foreground/70 pb-1 text-base font-black transition-all duration-300 md:text-lg ${align === "right" ? "border-r-0" : ""} ${hovered ? "scale-110 text-primary" : ""} origin-${align === "right" ? "right" : "left"}`}>
+      <div className={`mb-1 pb-1 text-base font-black transition-all duration-300 md:text-lg ${align === "right" ? "origin-right" : "origin-left"} ${hovered ? "scale-110 text-primary" : ""}`}>
         {node.title}
       </div>
-      <p className={`text-xs leading-5 text-muted-foreground transition-all duration-300 md:text-sm ${hovered ? "scale-105 text-foreground" : ""} origin-${align === "right" ? "right" : "left"}`}>
+      <p className={`text-xs leading-5 text-muted-foreground transition-all duration-300 md:text-sm ${align === "right" ? "origin-right" : "origin-left"} ${hovered ? "scale-105 text-foreground" : ""}`}>
         {node.text}
       </p>
     </div>
