@@ -12,7 +12,6 @@ import {
   MapPin,
   Navigation,
   PiggyBank,
-  Plus,
   Send,
   Settings2,
   Star,
