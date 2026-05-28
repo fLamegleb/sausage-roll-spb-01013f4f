@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/sausage-roll-hero.jpg";
 import mascot from "@/assets/review-mascot.png";
+import sausageOutline from "@/assets/sausage-outline.png";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -131,9 +132,6 @@ const Index = () => {
       <section className="relative paper-grain">
         <div className="container grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
           <div className="space-y-7 animate-rise">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-4 py-2 text-sm font-bold text-primary shadow-card backdrop-blur">
-              <BadgeCheck className="h-4 w-4" /> Sausage Roll Index · СПб
-            </div>
             <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-7xl lg:text-[6.2rem]">
               Рейтинг<br />булочных<br />СПб
             </h1>
@@ -305,41 +303,11 @@ const Index = () => {
         </Reveal>
       </section>
 
-      {/* FORMULA */}
-      <section className="bg-cream py-20">
-        <div className="container">
-          <Reveal className="mb-10 max-w-3xl">
-            <p className="mb-3 text-sm font-bold uppercase tracking-wider text-primary">Как считается рейтинг</p>
-            <h2 className="text-4xl font-black uppercase md:text-6xl">Формула честной булки</h2>
-          </Reveal>
-          <div className="grid gap-4 md:grid-cols-5">
-            {[["тесто", Wheat], ["сосиска", Heart], ["цена", PiggyBank], ["фото", Camera], ["лайк", ThumbsUp]].map(([label, Icon], i) => {
-              const I = Icon as typeof Wheat;
-              return (
-                <Reveal key={String(label)} delay={i * 60}>
-                  <div className="rounded-2xl border border-border bg-card p-6 text-center shadow-card transition hover:-translate-y-1 hover:shadow-warm">
-                    <I className="mx-auto mb-4 h-9 w-9 text-primary" />
-                    <div className="text-sm font-black uppercase">{String(label)}</div>
-                    <div className="mt-2 text-2xl font-black text-accent">+1</div>
-                  </div>
-                </Reveal>
-              );
-            })}
-
-
-          </div>
-          <Reveal>
-            <div className="mt-6 rounded-2xl border border-primary/20 bg-card p-6 text-center text-base font-black shadow-card md:text-xl">
-              Итоговый рейтинг = свежесть теста + сочность сосиски + цена/качество + внешний вид + рекомендации
-            </div>
-          </Reveal>
-        </div>
-      </section>
 
       <footer className="bg-cocoa py-16 text-primary-foreground/80">
         <div className="container text-center">
           <h2 className="font-display text-5xl font-black uppercase leading-none text-primary-foreground md:text-8xl">Рейтинг<br />булочных<br />СПб</h2>
-          <p className="mt-6 text-sm">Sausage Roll Index · Санкт-Петербург</p>
+          
         </div>
       </footer>
 
@@ -431,7 +399,7 @@ const SausageComposition = () => {
           {/* CENTER box (desktop) */}
           <div className="order-first col-span-2 md:order-none md:col-span-1">
             <div className="mx-auto flex aspect-[5/4] max-w-xs items-center justify-center rounded-3xl bg-mustard shadow-warm md:max-w-sm">
-              <SausageSvg />
+              <img src={sausageOutline} alt="Сосиска в тесте — схема" className="h-full w-full object-contain p-6 transition-transform duration-500 hover:scale-105" />
             </div>
           </div>
           {/* RIGHT column */}
