@@ -384,17 +384,150 @@ const Index = () => {
   );
 };
 
-const InfoNode = ({ icon: Icon, title, text, align }: { icon: typeof MapPin; title: string; text: string; align: "left" | "right" }) => (
-  <div className={`flex items-start gap-3 ${align === "right" ? "md:flex-row-reverse md:text-right" : ""}`}>
-    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mustard text-cocoa shadow-card">
-      <Icon className="h-5 w-5" />
+type CompNode = { icon: typeof MapPin; title: string; text: string; corner: "tl" | "tr" | "bl" | "br" };
+const compNodes: CompNode[] = [
+  { icon: Beef, title: "Сосиска", text: "Сочная мясная начинка из отборных ингредиентов", corner: "tl" },
+  { icon: Droplet, title: "Соусы", text: "Добавьте кетчуп, сырный или фирменный соус", corner: "tr" },
+  { icon: Cookie, title: "Тесто", text: "Мягкое воздушное тесто с золотистой корочкой", corner: "bl" },
+  { icon: Settings2, title: "Добавки", text: "Сыр, халапеньо, лук или бекон", corner: "br" },
+];
+
+// SVG paths from each corner label toward the central box edge (viewBox 100x60)
+const linePaths: Record<CompNode["corner"], string> = {
+  tl: "M 14 14 L 28 14 L 38 24",
+  tr: "M 86 14 L 72 14 L 62 24",
+  bl: "M 14 46 L 28 46 L 38 36",
+  br: "M 86 46 L 72 46 L 62 36",
+};
+
+const SausageComposition = () => {
+  const [hover, setHover] = useState<string | null>(null);
+  return (
+    <div className="rounded-3xl border border-border bg-card p-5 shadow-card md:p-10">
+      <p className="mb-6 text-center text-sm font-bold uppercase tracking-wider text-foreground/80 md:text-base">Настоящая сосиска в тесте состоит из:</p>
+      <div className="relative">
+        {/* SVG connectors — desktop only */}
+        <svg viewBox="0 0 100 60" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 hidden h-full w-full md:block">
+          {compNodes.map((n) => (
+            <path
+              key={n.corner}
+              d={linePaths[n.corner]}
+              fill="none"
+              stroke={hover === n.title ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.6)"}
+              strokeWidth={hover === n.title ? 0.6 : 0.3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-all duration-300"
+            />
+          ))}
+        </svg>
+
+        <div className="grid grid-cols-2 items-center gap-6 md:grid-cols-[1fr_1.3fr_1fr] md:gap-10">
+          {/* LEFT column */}
+          <div className="space-y-10 md:space-y-20">
+            <CompCorner node={compNodes[0]} hovered={hover === compNodes[0].title} onHover={setHover} align="left" />
+            <CompCorner node={compNodes[2]} hovered={hover === compNodes[2].title} onHover={setHover} align="left" />
+          </div>
+          {/* CENTER box (desktop) */}
+          <div className="order-first col-span-2 md:order-none md:col-span-1">
+            <div className="mx-auto flex aspect-[5/4] max-w-xs items-center justify-center rounded-3xl bg-mustard shadow-warm md:max-w-sm">
+              <SausageSvg />
+            </div>
+          </div>
+          {/* RIGHT column */}
+          <div className="space-y-10 md:space-y-20">
+            <CompCorner node={compNodes[1]} hovered={hover === compNodes[1].title} onHover={setHover} align="right" />
+            <CompCorner node={compNodes[3]} hovered={hover === compNodes[3].title} onHover={setHover} align="right" />
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <div className="text-sm font-black text-primary">{title}</div>
-      <p className="mt-1 text-xs leading-5 text-muted-foreground md:text-sm">{text}</p>
+  );
+};
+
+const CompCorner = ({ node, hovered, onHover, align }: { node: CompNode; hovered: boolean; onHover: (t: string | null) => void; align: "left" | "right" }) => {
+  const Icon = node.icon;
+  return (
+    <div
+      onMouseEnter={() => onHover(node.title)}
+      onMouseLeave={() => onHover(null)}
+      className={`group cursor-pointer ${align === "right" ? "text-right" : "text-left"}`}
+    >
+      <div className={`mb-2 flex ${align === "right" ? "justify-end" : "justify-start"}`}>
+        <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-mustard text-cocoa shadow-card transition-transform duration-300 ${hovered ? "scale-110" : ""}`}>
+          <Icon className="h-5 w-5" />
+        </div>
+      </div>
+      <div className={`mb-1 border-foreground/70 pb-1 text-base font-black transition-all duration-300 md:text-lg ${align === "right" ? "border-r-0" : ""} ${hovered ? "scale-110 text-primary" : ""} origin-${align === "right" ? "right" : "left"}`}>
+        {node.title}
+      </div>
+      <p className={`text-xs leading-5 text-muted-foreground transition-all duration-300 md:text-sm ${hovered ? "scale-105 text-foreground" : ""} origin-${align === "right" ? "right" : "left"}`}>
+        {node.text}
+      </p>
     </div>
-  </div>
+  );
+};
+
+const SausageSvg = () => (
+  <svg viewBox="0 0 200 140" className="h-3/4 w-3/4">
+    <g fill="none" stroke="hsl(var(--cocoa))" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="100" cy="70" rx="78" ry="34" />
+      <path d="M40 55 q12 18 0 32" />
+      <path d="M60 50 q14 22 0 42" />
+      <path d="M82 48 q14 22 0 46" />
+      <path d="M104 48 q14 22 0 46" />
+      <path d="M126 50 q14 22 0 42" />
+      <path d="M148 54 q12 18 0 34" />
+      <path d="M30 70 l-10 -4 m10 4 l-10 4 m10 -4 l-12 0" />
+    </g>
+  </svg>
 );
+
+type MapProps = { bakeries: Bakery[]; active: Bakery; setActive: (b: Bakery) => void; openBakery: (b: Bakery) => void };
+const SpbMap = ({ bakeries, active, setActive, openBakery }: MapProps) => {
+  return (
+    <div className="relative h-[560px] overflow-hidden rounded-3xl border-[6px] border-cocoa bg-cocoa shadow-warm">
+      <iframe
+        title="Карта Санкт-Петербурга"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=30.20%2C59.905%2C30.42%2C59.97&layer=mapnik"
+        className="absolute inset-0 h-full w-full"
+        style={{ border: 0, pointerEvents: "none" }}
+        loading="lazy"
+      />
+      {/* clickable overlay layer */}
+      <div className="pointer-events-none absolute inset-0">
+        {bakeries.map((b) => {
+          const isActive = b.name === active.name;
+          return (
+            <button
+              key={b.name}
+              onClick={() => setActive(b)}
+              style={{ left: b.x, top: b.y }}
+              className={`pointer-events-auto absolute -translate-x-1/2 -translate-y-full transition-all duration-300 hover:scale-125 ${isActive ? "z-20 scale-125" : "z-10"}`}
+              aria-label={b.name}
+            >
+              <span className="relative block">
+                {isActive && (
+                  <span className="absolute -inset-2 -z-10 animate-ping rounded-full bg-mustard/60" />
+                )}
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-cocoa bg-mustard text-cocoa shadow-warm">
+                  <MapPin className="h-5 w-5" />
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {/* mini-card */}
+      <div className="absolute bottom-5 right-5 left-5 z-30 rounded-2xl bg-cream p-4 text-foreground shadow-warm sm:left-auto sm:w-72 animate-fade-in" key={active.name}>
+        <div className="text-base font-black uppercase">{active.name}</div>
+        <p className="mt-1 text-sm text-muted-foreground">Рейтинг сосиски: <b className="text-primary">{active.rating}</b> · цена {active.price} ₽</p>
+        <Button variant="hero" size="sm" className="mt-3" onClick={() => openBakery(active)}>Подробнее</Button>
+      </div>
+    </div>
+  );
+};
+
 
 const FactCell = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-xl border border-border bg-muted/60 p-3">
