@@ -139,7 +139,7 @@ const Index = () => {
         <div className="container grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
           <div className="space-y-7 animate-rise">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-4 py-2 text-sm font-bold text-primary shadow-card backdrop-blur">
-              <BadgeCheck className="h-4 w-4" /> Производственная практика 2026
+              <BadgeCheck className="h-4 w-4" /> Sausage Roll Index · СПб
             </div>
             <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-7xl lg:text-[6.2rem]">
               Рейтинг<br />булочных<br />СПб
