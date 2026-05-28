@@ -19,7 +19,7 @@ import {
   Upload,
   Wheat,
 } from "lucide-react";
-import heroImage from "@/assets/sausage-roll-hero.jpg";
+import heroImage from "@/assets/hero-sausage.png";
 import mascot from "@/assets/review-mascot.png";
 import sausageOutline from "@/assets/sausage-outline.png";
 import { Button } from "@/components/ui/button";
@@ -143,14 +143,14 @@ const Index = () => {
               <Button asChild variant="bakery" size="xl"><a href="#review"><Send /> Оставить отзыв</a></Button>
             </div>
           </div>
-          <div className="relative">
-            <img src={heroImage} alt="Сосиска в тесте крупным планом" width={1600} height={1100} className="h-[44vh] min-h-[320px] w-full rounded-[2rem] object-cover shadow-warm lg:h-[72vh] animate-float" />
-            <div className="absolute -bottom-7 left-6 rounded-2xl border border-border bg-card p-4 shadow-warm md:p-5">
-              <div className="text-3xl">🌭</div>
-              <div className="font-display text-xl font-black md:text-2xl">Индекс сосиски</div>
-              <div className="text-xs text-muted-foreground md:text-sm">важнее общего рейтинга</div>
-            </div>
+          <div className="relative h-[44vh] min-h-[280px] lg:h-[72vh] overflow-visible">
+            <img
+              src={heroImage}
+              alt="Сосиска в тесте крупным планом"
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%]"
+            />
           </div>
+
         </div>
       </section>
 

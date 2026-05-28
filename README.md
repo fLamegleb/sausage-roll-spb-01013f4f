@@ -1,3 +1,14 @@
-# Welcome to your Lovable project
+# Рейтинг булочных СПб
 
-TODO: Document your project here
+Информационный сайт-рейтинг булочных Санкт-Петербурга по качеству сосисок в тесте.
+
+## Стек
+- Vite + React + TypeScript
+- Tailwind CSS
+- shadcn/ui
+
+## Разработка
+```sh
+npm i
+npm run dev
+```
