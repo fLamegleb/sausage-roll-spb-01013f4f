@@ -184,25 +184,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* INFOGRAPHIC: настоящая сосиска состоит из */}
+      {/* INFOGRAPHIC */}
       <section className="container pb-10">
         <Reveal>
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-card md:p-10">
-            <p className="mb-8 text-center text-base font-bold uppercase tracking-wider text-foreground/80">Настоящая сосиска в тесте состоит из:</p>
-            <div className="grid items-center gap-8 md:grid-cols-[1fr_1.2fr_1fr]">
-              <div className="space-y-10">
-                <InfoNode icon={Beef} title="Сосиска" text="Сочная мясная начинка из отборных ингредиентов" align="right" />
-                <InfoNode icon={Cookie} title="Тесто" text="Мягкое воздушное тесто с золотистой корочкой" align="right" />
-              </div>
-              <div className="relative mx-auto aspect-square w-full max-w-xs rounded-3xl bg-mustard p-4 shadow-warm md:max-w-sm">
-                <img src={diagram} alt="Схема сосиски в тесте" width={800} height={600} loading="lazy" className="h-full w-full object-contain" />
-              </div>
-              <div className="space-y-10">
-                <InfoNode icon={Droplet} title="Соусы" text="Кетчуп, сырный или фирменный соус" align="left" />
-                <InfoNode icon={Settings2} title="Добавки" text="Сыр, халапеньо, лук или бекон" align="left" />
-              </div>
-            </div>
-          </div>
+          <SausageComposition />
         </Reveal>
       </section>
 
