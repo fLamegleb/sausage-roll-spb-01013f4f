@@ -147,7 +147,7 @@ const Index = () => {
             <img
               src={heroImage}
               alt="Сосиска в тесте крупным планом"
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%]"
+              className="absolute left-0 top-0 h-[110%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%] lg:top-[-8%]"
             />
           </div>
 
