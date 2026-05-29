@@ -150,11 +150,11 @@ const Index = () => {
               <Button asChild variant="bakery" size="xl" className="w-full sm:w-auto"><a href="#review"><Send /> Оставить отзыв</a></Button>
             </div>
           </div>
-          <div className="relative hidden h-[44vh] min-h-[280px] lg:block lg:h-[72vh] overflow-visible">
+          <div className="relative hidden h-[44vh] min-h-[280px] lg:block lg:h-[60vh] overflow-visible">
             <img
               src={heroImage}
               alt="Сосиска в тесте крупным планом"
-              className="absolute left-0 top-0 h-[110%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%] lg:top-[-8%]"
+              className="absolute top-1/2 -translate-y-1/2 left-[-8%] h-auto w-[150%] max-w-none object-contain object-left animate-float pointer-events-none select-none"
             />
           </div>
         </div>
