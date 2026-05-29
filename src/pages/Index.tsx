@@ -129,9 +129,16 @@ const Index = () => {
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       {/* HERO */}
-      <section className="relative paper-grain">
+      <section className="relative paper-grain overflow-hidden">
+        {/* Mobile sausage peek from top-right */}
+        <img
+          src={heroImage}
+          alt=""
+          aria-hidden
+          className="pointer-events-none select-none absolute -right-16 -top-4 w-[62%] max-w-[320px] rotate-[18deg] object-contain animate-float lg:hidden"
+        />
         <div className="container grid items-center gap-10 py-12 md:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
-          <div className="space-y-7 animate-rise">
+          <div className="space-y-6 animate-rise relative z-10">
             <h1 className="text-5xl font-black uppercase leading-[0.95] tracking-tight md:text-7xl lg:text-[6.2rem]">
               Рейтинг<br />булочных<br />СПб
             </h1>
@@ -139,20 +146,20 @@ const Index = () => {
               Оцениваем булочные по свежести теста и сочности сосиски.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild variant="hero" size="xl"><a href="#rating"><Star /> Смотреть рейтинг</a></Button>
-              <Button asChild variant="bakery" size="xl"><a href="#review"><Send /> Оставить отзыв</a></Button>
+              <Button asChild variant="hero" size="xl" className="w-full sm:w-auto"><a href="#rating"><Star /> Смотреть рейтинг</a></Button>
+              <Button asChild variant="bakery" size="xl" className="w-full sm:w-auto"><a href="#review"><Send /> Оставить отзыв</a></Button>
             </div>
           </div>
-          <div className="relative h-[44vh] min-h-[280px] lg:h-[72vh] overflow-visible">
+          <div className="relative hidden h-[44vh] min-h-[280px] lg:block lg:h-[72vh] overflow-visible">
             <img
               src={heroImage}
               alt="Сосиска в тесте крупным планом"
               className="absolute left-0 top-0 h-[110%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%] lg:top-[-8%]"
             />
           </div>
-
         </div>
       </section>
+
 
       {/* REASONS */}
       <section className="container py-20">
