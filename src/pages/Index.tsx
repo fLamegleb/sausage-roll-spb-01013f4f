@@ -147,7 +147,7 @@ const Index = () => {
             <img
               src={heroImage}
               alt="Сосиска в тесте крупным планом"
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-[120%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%]"
+              className="absolute left-0 top-0 h-[110%] w-auto max-w-none object-contain animate-float pointer-events-none select-none lg:left-[-4%] lg:top-[-8%]"
             />
           </div>
 
@@ -252,7 +252,7 @@ const Index = () => {
           <p className="mb-3 text-sm font-bold uppercase tracking-wider text-primary">Анкета покупателей</p>
           <h2 className="text-4xl font-black uppercase leading-tight md:text-6xl">Ваш перекус<br />— часть науки</h2>
           <p className="mt-5 max-w-md text-base leading-7 text-muted-foreground">Дружелюбная форма для отзывов помогает обновлять Sausage Roll Index и отделять легенду от пересушенной сосиски.</p>
-          <img src={mascot} alt="Маскот с сосиской в тесте" width={800} height={800} loading="lazy" className="mt-6 w-64 animate-float" />
+          <img src={mascot} alt="Маскот с сосиской в тесте" width={800} height={800} loading="lazy" className="mt-6 w-80 md:w-[28rem] lg:w-[34rem] animate-float" />
         </Reveal>
 
         <Reveal delay={120}>
