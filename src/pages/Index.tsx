@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import {
   BadgeCheck,
@@ -16,7 +16,6 @@ import {
   Settings2,
   Star,
   ThumbsUp,
-  Upload,
   Wheat,
 } from "lucide-react";
 import heroImage from "@/assets/hero-sausage.png";
@@ -28,6 +27,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { FeedbackForm } from "@/components/FeedbackForm";
+import { sendEmail } from "@/lib/emailjs";
 import { Reveal } from "@/components/Reveal";
 
 type Bakery = {
@@ -74,10 +75,14 @@ const reviewSchema = z.object({
   time: z.string().min(1, "Укажите время"),
   place: z.string().trim().min(2, "Название заведения").max(80),
   comment: z.string().trim().max(800).optional(),
-  recommend: z.string().min(1, "Выберите вариант"),
+  recommend: z.enum(["yes", "maybe", "no"], { errorMap: () => ({ message: "Выберите, рекомендуете ли вы заведение" }) }),
 });
 
 const Index = () => {
+  const [sendingReview, setSendingReview] = useState(false);
+  const reviewLock = useRef(false);
+  const [reviewStatus, setReviewStatus] = useState("");
+  const [website, setWebsite] = useState("");
   const [sort, setSort] = useState("rating");
   const [district, setDistrict] = useState("all");
   const [dough, setDough] = useState("all");
@@ -115,15 +120,42 @@ const Index = () => {
       });
   }, [district, dough, sort]);
 
-  const submitReview = (e: React.FormEvent) => {
+  const submitReview = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (reviewLock.current || website) return;
     const parsed = reviewSchema.safeParse(form);
     if (!parsed.success) {
-      toast({ title: "Заполните форму", description: parsed.error.issues[0]?.message ?? "Проверьте поля", variant: "destructive" });
+      setReviewStatus(parsed.error.issues[0]?.message ?? "Проверьте поля");
       return;
     }
-    toast({ title: "Отзыв отправлен 🌭", description: `Спасибо, ${form.name}! Индекс обновится в ближайшие минуты.` });
-    setForm({ name: "", date: "", time: "", place: "", comment: "", recommend: "", freshness: 4, juiciness: 4, value: 4, look: 4 });
+    reviewLock.current = true;
+    setSendingReview(true);
+    setReviewStatus("");
+    try {
+      const data = parsed.data;
+      const recommendation = { yes: "Да, обязательно", maybe: "Возможно", no: "Нет" }[data.recommend];
+      await sendEmail({
+        subject: "Новый отзыв — " + data.place,
+        from_name: data.name,
+        message: [
+          "Заведение: " + data.place,
+          "Посещение: " + data.date + " " + data.time,
+          "Свежесть теста: " + form.freshness + "/5",
+          "Сочность сосиски: " + form.juiciness + "/5",
+          "Цена-качество: " + form.value + "/5",
+          "Внешний вид: " + form.look + "/5",
+          "Рекомендует: " + recommendation,
+          "Комментарий: " + (data.comment || "—"),
+        ].join("\n"),
+      });
+      setReviewStatus("Отзыв отправлен! Спасибо, " + data.name + ". Он поступил на рассмотрение команде сайта.");
+      setForm({ name: "", date: "", time: "", place: "", comment: "", recommend: "", freshness: 4, juiciness: 4, value: 4, look: 4 });
+    } catch (error) {
+      setReviewStatus(error instanceof Error ? error.message : "Не удалось отправить отзыв. Попробуйте ещё раз.");
+    } finally {
+      reviewLock.current = false;
+      setSendingReview(false);
+    }
   };
 
   return (
@@ -263,12 +295,14 @@ const Index = () => {
         </Reveal>
 
         <Reveal delay={120}>
-          <form onSubmit={submitReview} className="rounded-2xl border border-border bg-card p-5 shadow-card md:p-8">
+          <form onSubmit={submitReview} aria-busy={sendingReview} className="rounded-2xl border border-border bg-card p-5 shadow-card md:p-8">
+            <fieldset disabled={sendingReview}>
+            <div className="hidden" aria-hidden="true"><label>Ваш сайт<Input value={website} onChange={e => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" /></label></div>
             <div className="grid gap-4 md:grid-cols-2">
-              <Input placeholder="Имя" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={60} />
-              <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-              <Input type="time" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
-              <Input placeholder="Название заведения" value={form.place} onChange={(e) => setForm({ ...form, place: e.target.value })} maxLength={80} />
+              <Input aria-label="Ваше имя" placeholder="Имя" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={60} />
+              <Input aria-label="Дата посещения" type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+              <Input aria-label="Время посещения" type="time" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} />
+              <Input aria-label="Название заведения" placeholder="Название заведения" value={form.place} onChange={(e) => setForm({ ...form, place: e.target.value })} maxLength={80} />
             </div>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {([
@@ -282,7 +316,7 @@ const Index = () => {
                     <span>{label}</span><span className="text-primary">{form[key]}/5</span>
                   </div>
                   <input
-                    type="range" min={1} max={5} step={0.1}
+                    aria-label={label} type="range" min={1} max={5} step={0.1}
                     value={form[key]}
                     onChange={(e) => setForm({ ...form, [key]: Number(e.target.value) })}
                     className="mt-3 w-full accent-primary"
@@ -292,27 +326,29 @@ const Index = () => {
             </div>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <Select value={form.recommend} onValueChange={(v) => setForm({ ...form, recommend: v })}>
-                <SelectTrigger><SelectValue placeholder="Рекомендуете?" /></SelectTrigger>
+                <SelectTrigger aria-label="Рекомендуете заведение?"><SelectValue placeholder="Рекомендуете?" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="yes">Да, обязательно</SelectItem>
                   <SelectItem value="maybe">Возможно</SelectItem>
                   <SelectItem value="no">Нет</SelectItem>
                 </SelectContent>
               </Select>
-              <label className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md border border-input bg-background text-sm font-bold transition hover:bg-secondary">
-                <Upload className="h-4 w-4" /> Загрузка фото
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && toast({ title: "Фото добавлено", description: e.target.files[0].name })} />
-              </label>
+              <p className="text-sm text-muted-foreground">Отзывы приходят команде сайта на почту и проходят проверку перед публикацией.</p>
             </div>
-            <Textarea className="mt-5" placeholder="Комментарий: температура, хруст, настроение, очередь…" value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} maxLength={800} />
-            <Button type="submit" variant="hero" size="xl" className="mt-5 w-full"><Send /> Отправить отзыв</Button>
+            <Textarea aria-label="Комментарий к отзыву" className="mt-5" placeholder="Комментарий: температура, хруст, настроение, очередь…" value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} maxLength={800} />
+            <Button type="submit" variant="hero" size="xl" className="mt-5 w-full"><Send /> {sendingReview ? "Отправляем…" : "Отправить отзыв"}</Button>
+            </fieldset>
+            <p className="mt-4 text-sm text-muted-foreground" role="status" aria-live="polite">{reviewStatus}</p>
           </form>
         </Reveal>
       </section>
 
 
+      <FeedbackForm />
+
       <footer className="bg-cocoa py-16 text-primary-foreground/80">
         <div className="container text-center">
+          <a href="#feedback" className="mb-8 inline-block underline underline-offset-4">Обратная связь</a>
           <h2 className="font-display text-5xl font-black uppercase leading-none text-primary-foreground md:text-8xl">Рейтинг<br />булочных<br />СПб</h2>
           
         </div>
