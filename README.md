@@ -55,3 +55,5 @@ VITE_EMAILJS_PUBLIC_KEY=...
 7. После изменения переменных Vercel сделайте Redeploy: значения Vite подставляются при сборке. Проверьте обе формы и получение писем (включая папку Спам). Отключите сеть и убедитесь, что текст при сбое остаётся. Реальная доставка до заполнения параметров не проверена.
 
 Документация: [EmailJS send](https://www.emailjs.com/docs/rest-api/send/), [переменные шаблонов](https://www.emailjs.com/docs/user-guide/dynamic-variables-templates/), [Vercel variables](https://vercel.com/docs/environment-variables).
+
+Production EmailJS настроен в `.env.production`: только публичные идентификаторы браузерного API. При необходимости значения можно переопределить переменными окружения Vercel. Получатель задаётся в To Email шаблона EmailJS: `hggyytt54@gmail.com`.
